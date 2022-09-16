@@ -15,9 +15,13 @@ function back(e) {
 console.log(e.target.files)
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> 729fb8c (add README.md.)
+=======
+
+>>>>>>> f4ddc31 (fix)
 upload(back)
 html 中
 引入 file.js 文件
