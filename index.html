@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>file-upload</title>
+    <style>
+      .primary {
+        background-color: aqua;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <input v-if="fileShow" id="file_btn" type="file" style="display: none" /> -->
+    <db-button type="primary">点击</db-button>
+    <db-button>点击1</db-button>
+    <db-button>点击2</db-button>
+    <div class="box"></div>
+    <script src="./file.js"></script>
+    <button id="upload">点击上传</button>
+    <script>
+      let btn = document.getElementById('upload')
+
+      function back(e) {
+        console.log(e.target.files)
+      }
+      let back1
+      btn.onclick = function () {
+        // console.log('点击')
+        upload(back)
+        // console.log(callbacks())
+      }
+
+      var dbbtn = document.getElementsByTagName('db-button')
+      // console.log(dbbtn[0].getAttribute('type'), '??')
+    </script>
+  </body>
+</html>

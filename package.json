@@ -1,0 +1,21 @@
+{
+  "name": "db-file",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "am1210660",
+  "license": "ISC",
+  "keywords": [
+    "file",
+    "input",
+    "upload",
+    "javascript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/121066/file-upload"
+  }
+}
