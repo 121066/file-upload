@@ -7,8 +7,6 @@
 vue 中
 import {upload} from 'upload'
 
-<!--  -->
-
 upload 需要传入一个方法来接收上传的 file 对象
 例如:
 function back(e) {
