@@ -14,7 +14,10 @@ upload 需要传入一个方法来接收上传的 file 对象
 function back(e) {
 console.log(e.target.files)
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 729fb8c (add README.md.)
 upload(back)
 html 中
 引入 file.js 文件
