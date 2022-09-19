@@ -12,7 +12,7 @@ function upload(callbacks) {
   input.removeEventListener('change', (e) => console.log('a'))
   input.click()
   input.addEventListener('change', callbacks, false)
-  input?.removeEventListener('change', () => console.log('a'))
+  input.removeEventListener('change', () => console.log('a'))
   const v = input.outerHTML
   input.outerHTML = v
 }

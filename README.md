@@ -5,7 +5,7 @@
 ## 使用方法
 
 vue 中
-import {upload} from 'upload'
+import {upload} from 'db-file'
 
 upload 需要传入一个方法来接收上传的 file 对象
 例如:
@@ -13,7 +13,9 @@ function back(e) {
 console.log(e.target.files)
 }
 
-upload(back)
-html 中
+## upload(back)
+
+## html 中
+
 引入 file.js 文件
 调用方法同上
