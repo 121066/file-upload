@@ -1,6 +1,6 @@
 {
   "name": "db-file",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,10 @@
     "file",
     "input",
     "upload",
-    "javascript"
+    "javascript",
+    "vue-file",
+    "react",
+    "react-file"
   ],
   "repository": {
     "type": "git",
