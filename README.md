@@ -8,17 +8,42 @@
 vue 中
 
 ```
-import upload from 'db-file'
+import {upload} from 'db-file'
 ```
 
 upload 需要传入一个方法来接收上传的 file 对象
 
+## 提供 api
+
+```
+upload(callback,type,size)
+
+callback 回调函数
+
+type 文件类型 例:['txt','png']
+
+size 文件大小 例: 1024或1024*100 传数字
+
+downLoad(fileName,data) 下载文件流
+
+fileName 文件名称
+
+data 文件流
+
+```
+
 ```例如:
+
 调用
 upload(back)
 
-function back(e) {
+function back(e,success,type) {
+
 console.log(e.target.files)//文件
+
+type 校验不通过类型 size||type
+
+success 布尔值 false
 
 }
 ```
