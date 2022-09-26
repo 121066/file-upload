@@ -52,3 +52,8 @@ success 布尔值 false
 
 引入 file.js 文件
 调用方法同上
+
+<p align="center">
+
+  <img src="https://dbyxs.xyz:3006/uploads/21ed635034fe1f350aa92e14bc63e287" width="100%" alt="组件效果图">
+</p>
