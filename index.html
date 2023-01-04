@@ -23,12 +23,14 @@
       let btn = document.getElementById('upload')
 
       function back(e, msg) {
-        console.log(e, msg)
+        console.log(e.target.files, '---', msg, '????')
       }
       let back1
       btn.onclick = function () {
         // console.log('点击')
-        console.log(upload(back, ['txt'], 1024 * 200))
+        // console.log(upload(back, ['txt'], 1024 * 200))
+        // upload(back)
+        upload(back, ['txt'])
         // console.log(callbacks())
       }
 

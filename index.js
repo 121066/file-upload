@@ -35,6 +35,7 @@ export function upload(callbacks, type, size) {
   input.removeEventListener('change', () => console.log('a'))
   const v = input.outerHTML
   input.outerHTML = v
+  document.body.removeChild(document.querySelector('input') || input)
 }
 
 export function downLoad(fileName, data) {

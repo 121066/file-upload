@@ -51,9 +51,11 @@ function upload(callbacks, type, size) {
       false
     )
   }
+
   input.removeEventListener('change', () => {})
   const v = input.outerHTML
   input.outerHTML = v
+  document.body.removeChild(document.querySelector('input') || input)
 }
 function downLoad(fileName, data) {
   const filename = fileName

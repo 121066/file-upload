@@ -42,7 +42,7 @@ upload(back)
 
 function back(e,success,type) {
 
-console.log(e.target.files)//文件
+console.log(e.target.files)//文件流对象&&Filestream Object
 
 type 校验不通过类型 size||type
 
