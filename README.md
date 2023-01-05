@@ -35,6 +35,8 @@ data 文件流
 
 ```
 
+### 调用
+
 ```例如:
 
 调用
@@ -42,7 +44,11 @@ upload(back)
 
 function back(e,success,type) {
 
-console.log(e.target.files)//文件流对象&&Filestream Object
+console.log(e.target.files)//文件流对象&&Filestream Object 1.0.7版本以前
+console.log(e)// 1.0.8版本以后
+e>>> File stream
+
+
 
 type 校验不通过类型 size||type
 

@@ -40,12 +40,12 @@ function upload(callbacks, type, size) {
         const types =
           files[0].name.split('.')[files[0].name.split('.').length - 1]
         if (size && files[0].size >= size) {
-          return callbacks(e, false, 'size')
+          return callbacks(files, false, 'size')
         }
         if (type.length > 0 && !type.includes(types)) {
-          return callbacks(e, false, 'type')
+          return callbacks(files, false, 'type')
         } else {
-          return callbacks(e)
+          return callbacks(files)
         }
       },
       false
