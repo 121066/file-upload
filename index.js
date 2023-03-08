@@ -52,3 +52,12 @@ export function downLoad(fileName, data) {
   document.body.removeChild(link)
   window.URL.revokeObjectURL(link)
 }
+export function uploadBase(value){
+  return new Promise((resolve)=>{
+    const reader=new FileReader()
+  reader.onload=function(e){
+    resolve(e.target.result)
+  }
+  reader.readAsDataURL(value)
+  })
+}

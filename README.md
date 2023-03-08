@@ -33,6 +33,8 @@ fileName 文件名称 Document name
 
 data 文件流
 
+uploadBase(e[0]) 文件转base64 返回一个Promise
+
 ```
 
 ### 调用

@@ -23,7 +23,11 @@
       let btn = document.getElementById('upload')
 
       function back(e, msg) {
-        console.log(e, '---', msg, '????')
+        console.log(e[0], '---', msg, '????')
+       uploadBase(e[0]).then(res=>{
+         console.log(res,'base')
+       })
+      
       }
       let back1
       btn.onclick = function () {
