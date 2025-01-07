@@ -1,70 +1,196 @@
-## file-upload
+# db-file
 
-使用原生 js 实现的文件上传目前没有加文件类型和大小判断,后期会不定时更新
-适用于 vue&react 等前端框架
-Files uploaded using native js are not judged by file type and size at present, and will be updated irregularly later
+一个轻量级的文件上传下载工具库，支持文件上传、下载和 Base64 转换功能。
 
-Applicable to front-end frameworks such as vue&read
+## 特性
 
-## 使用方法 usage method
+- 📦 支持多种模块格式 (UMD/CommonJS/ESM)
+- 🔑 TypeScript 支持，带有完整的类型定义
+- 🚀 支持文件类型和大小限制
+- 💫 支持文件转 Base64
+- 🎯 零依赖
+- 📱 支持主流浏览器
 
-vue 中
+## 安装
 
-```
-import {upload} from 'db-file'
-```
-
-upload 需要传入一个方法来接收上传的 file 对象 Upload needs to pass in a method to receive the uploaded file object
-
-## 提供 api
-
-```
-upload(callback,type,size)
-
-callback 回调函数 Callback function
-
-type 文件类型 例:['txt','png'] Example of file type: ['txt ',' png ']
-
-size 文件大小 例: 1024或1024*100 传数字 Example of file size: 1024 or 1024 * 100 for digital transmission
-
-downLoad(fileName,data) 下载文件流 Download file stream
-
-fileName 文件名称 Document name
-
-data 文件流
-
-uploadBase(e[0]) 文件转base64 返回一个Promise
-
+```bash
+npm install db-file
+# 或
+yarn add db-file
 ```
 
-### 调用
+## 使用方法
 
-```例如:
+### 模块引入
 
-调用
-upload(back)
+```javascript
+// ES Module
+import { upload, download, uploadBase } from "db-file"
 
-function back(e,success,type) {
+// CommonJS
+const { upload, download, uploadBase } = require("db-file")
 
-console.log(e.target.files)//文件流对象&&Filestream Object 1.0.7版本以前
-console.log(e)// 1.0.8版本以后
-e>>> File stream
+// UMD (浏览器)
+;<script src="path/to/node_modules/db-file/dist/index.umd.js"></script>
+```
 
+### 文件上传
 
+```javascript
+// 基础用法
+upload((files) => {
+  console.log("上传的文件:", files[0])
+})
 
-type 校验不通过类型 size||type
+// 带文件类型和大小限制
+upload(
+  (files, status, errorType) => {
+    if (errorType === "size") {
+      console.log("文件大小超出限制")
+      return
+    }
+    if (errorType === "type") {
+      console.log("文件类型不支持")
+      return
+    }
+    console.log("上传成功:", files[0])
+  },
+  {
+    type: ["jpg", "png", "pdf"], // 允许的文件类型
+    size: 5 * 1024 * 1024, // 文件大小限制（5MB）
+  }
+)
+```
 
-success 布尔值 false
+### 文件下载
 
+```javascript
+// 下载文本文件
+download('example.txt', 'Hello World');
+
+// 下载二进制数据
+const binaryData = new Uint8Array([...]);
+download('example.bin', binaryData);
+```
+
+### 文件转 Base64
+
+```javascript
+// 异步转换文件为 Base64
+uploadBase(file).then((base64) => {
+  console.log("文件的 Base64 编码:", base64)
+})
+```
+
+## API 文档
+
+### upload(callback, options?)
+
+文件上传函数
+
+#### 参数
+
+- `callback: (files: FileList, status?: boolean, errorType?: 'size' | 'type') => void`
+
+  - `files`: 上传的文件列表
+  - `status`: 上传状态
+  - `errorType`: 错误类型（'size' 或 'type'）
+
+- `options?: object`
+  - `type?: string[]`: 允许的文件类型数组
+  - `size?: number`: 最大文件大小（字节）
+
+### download(fileName: string, data: BlobPart)
+
+文件下载函数
+
+#### 参数
+
+- `fileName`: 下载文件的名称
+- `data`: 要下载的数据
+
+### uploadBase(file: Blob): Promise<string>
+
+文件转 Base64 函数
+
+#### 参数
+
+- `file`: 要转换的文件对象
+
+#### 返回值
+
+- `Promise<string>`: 返回文件的 Base64 编码字符串
+
+## 在框架中使用
+
+### Vue 示例
+
+```javascript
+import { upload } from "db-file"
+
+export default {
+  methods: {
+    handleUpload() {
+      upload(
+        (files, status, errorType) => {
+          if (errorType) {
+            console.log("错误类型:", errorType)
+            return
+          }
+          console.log("上传的文件:", files[0])
+        },
+        {
+          type: ["jpg", "png"],
+          size: 1024 * 1024 * 2, // 2MB
+        }
+      )
+    },
+  },
 }
 ```
 
-## html 中
+### React 示例
 
-引入 file.js 文件
-调用方法同上
+```javascript
+import { upload } from "db-file"
 
-<p align="center">
+function MyComponent() {
+  const handleUpload = () => {
+    upload(
+      (files, status, errorType) => {
+        if (errorType) {
+          console.log("错误类型:", errorType)
+          return
+        }
+        console.log("上传的文件:", files[0])
+      },
+      {
+        type: ["jpg", "png"],
+        size: 1024 * 1024 * 2, // 2MB
+      }
+    )
+  }
 
-  <img src="https://dbyxs.xyz:3006/uploads/21ed635034fe1f350aa92e14bc63e287" width="100%" alt="组件效果图">
-</p>
+  return <button onClick={handleUpload}>上传文件</button>
+}
+```
+
+## 浏览器兼容性
+
+- Chrome >= 49
+- Firefox >= 45
+- Safari >= 10
+- Edge >= 14
+- IE >= 11
+
+## 许可证
+
+ISC
+
+## 作者
+
+am1210660
+
+## 仓库
+
+[GitHub](https://github.com/am1210660/db-file)
