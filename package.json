@@ -10,7 +10,7 @@
     "build": "rollup -c",
     "version": "npm version patch",
     "prepublishOnly": "npm run build",
-     "publish:package": "npm publish"
+    "publish:package": "npm publish --registry=https://registry.npmjs.org/ --verbose --timeout=60000"
   },
   "author": "am1210660",
   "license": "ISC",
