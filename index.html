@@ -1,45 +1,150 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>file-upload</title>
-    <style>
-      .primary {
-        background-color: aqua;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- <input v-if="fileShow" id="file_btn" type="file" style="display: none" /> -->
-    <db-button type="primary">点击</db-button>
-    <db-button>点击1</db-button>
-    <db-button>点击2</db-button>
-    <!-- <div class="box"></div> -->
-    <script src="./file.js"></script>
-    <button id="upload">点击上传</button>
-    <script>
-      let btn = document.getElementById('upload')
+<html lang="zh-CN">
 
-      function back(e, msg) {
-        console.log(e[0], '---', msg, '????')
-       uploadBase(e[0]).then(res=>{
-         console.log(res,'base')
-       })
-      
-      }
-      let back1
-      btn.onclick = function () {
-        // console.log('点击')
-        // console.log(upload(back, ['txt'], 1024 * 200))
-        // upload(back)
-        upload(back, ['txt'])
-        // console.log(callbacks())
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>文件上传示例</title>
+  <style>
+    .upload-container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
 
-      var dbbtn = document.getElementsByTagName('db-button')
-      // console.log(dbbtn[0].getAttribute('type'), '??')
-    </script>
-  </body>
+    .btn {
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .btn-secondary {
+      background-color: #2196F3;
+      color: white;
+    }
+
+    .progress {
+      margin: 20px 0;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+    }
+
+    #chunkList {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="upload-container">
+    <h2>文件上传示例</h2>
+
+    <!-- 普通上传 -->
+    <button class="btn btn-primary" onclick="handleNormalUpload()">普通上传</button>
+
+    <!-- 大文件上传 -->
+    <button class="btn btn-secondary" onclick="handleLargeUpload()">大文件上传</button>
+
+    <!-- 进度和结果显示 -->
+    <div class="progress" id="progress"></div>
+    <div class="result" id="result"></div>
+    <div id="chunkList"></div>
+  </div>
+
+  <script src="../dist/index.umd.js"></script>
+  <script>
+    // 普通上传处理
+    function handleNormalUpload() {
+      FileUploadHelper.upload(
+        function (files, status, errorType) {
+          const result = document.getElementById('result');
+
+          if (errorType === 'size') {
+            result.textContent = '文件大小超出限制';
+            return;
+          }
+          if (errorType === 'type') {
+            result.textContent = '文件类型不支持';
+            return;
+          }
+
+          result.textContent = `上传成功：${files[0].name}`;
+          console.log(files, '文件')
+          // 转换为base64
+          FileUploadHelper.uploadBase(files[0]).then(base64 => {
+            console.log('文件base64:', base64.substring(0, 100) + '...');
+          });
+        },
+        {
+          type: ['jpg', 'png', 'pdf'],
+          size: 5 * 1024 * 1024 // 5MB
+        }
+      );
+    }
+
+    // 大文件上传处理
+    async function handleLargeUpload() {
+      FileUploadHelper.upload(async function (files) {
+        const file = files[0];
+        const result = document.getElementById('result');
+        const progress = document.getElementById('progress');
+        const chunkList = document.getElementById('chunkList');
+
+        try {
+          progress.textContent = '开始处理文件分片...';
+
+          // 获取文件分片
+          const chunks = await FileUploadHelper.cutFile(file, 1024 * 1024 * 20);
+          const chunkData = await Promise.all(chunks);
+
+          progress.textContent = `文件分片完成，共 ${chunkData.length} 个分片`;
+
+          // 显示分片信息
+          let chunkInfo = '<h3>分片信息：</h3>';
+          chunkData.forEach((chunk, index) => {
+            const size = (chunk.end - chunk.start) / 1024; // KB
+            chunkInfo += `
+                <div>
+                  分片 ${index + 1}:
+                  大小 ${size.toFixed(2)}KB,
+                  Hash: ${chunk.hash.substring(0, 8)}...
+                </div>
+              `;
+          });
+          chunkList.innerHTML = chunkInfo;
+
+          // 这里可以添加上传到服务器的逻辑
+          result.textContent = `文件 "${file.name}" 处理完成，
+              总大小: ${(file.size / 1024 / 1024).toFixed(2)}MB,
+              分片数: ${chunkData.length}`;
+
+        } catch (error) {
+          result.textContent = `处理失败：${error.message}`;
+          console.error('文件处理错误:', error);
+        }
+      });
+    }
+  </script>
+</body>
+
 </html>
